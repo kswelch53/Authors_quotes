@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login and Registration</title>
+    <meta charset="utf-8">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'app_one/css/style.css' %}" media="screen" title="no title">
+
+  </head>
+  <body>
+    <!-- <h1>This is index.html in apps_one</h1> -->
+
+<!-- User registration -->
+    <div class="miniwrap">
+
+      <h1>Add Your Favorite Quotes</h1>
+      <div class="login_reg">
+        <!-- <form action="/register" method="POST" id="register"> -->
+
+          <!-- This is the python syntax used with named routes: -->
+          <!-- register is a named route in apps-level urls.py -->
+        <form class="" action="{% url 'app1:register' %}" method="POST">
+          {% csrf_token %}
+
+          <h2>Register</h1>
+          <h3>Name: <input type="text" name="name" value=""></h3>
+          <h3>Alias: <input type="text" name="alias" value=""></h3>
+          <h3>Email: <input type="email" name="email" value=""></h3>
+
+          <!-- type="password" hides the password -->
+          <h3>Password: <input type="password" name="password" value=""></h3>
+          <h3>Confirm Password: <input type="password" name="confirmPW" value=""></h3>
+
+          <!-- type="date" generates a datepicker -->
+          <h3>Date of Birth: <input type="date" name="dob" value=""></h3>
+          <input type="Submit" value="Register">
+          <br>
+          <br>
+        </form>
+      </div><!-- end of registration -->
+
+
+<!-- User log-in -->
+      <div class="login_reg">
+        <!-- <form action="/login" method="POST"> -->
+        <!-- This is the python syntax used with named routes: -->
+        <!-- users is the named route for app_one in main-level urls.py -->
+        <!-- register is a named route in apps-level urls.py -->
+        <form class="" action="{% url 'app1:login' %}" method="POST">
+          {% csrf_token %}
+
+          <h2>Login</h1>
+          <h3>Email: <input type="email" name="email" value=""></h3>
+          <h3>Password: <input type="password" name="password" value=""></h3>
+          <input type="Submit" color="purple" value="Login">
+          <br>
+          <br>
+        </form>
+
+      </div><!--login_reg end div -->
+
+
+<!-- displaying error messages -->
+      <div class="error_messages">
+        {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div><!--error_messages end div -->
+
+    </div><!-- wrapper end div-->
+  </body>
+</html>

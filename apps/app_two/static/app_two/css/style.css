@@ -1,0 +1,68 @@
+a{
+  margin-left: 40%;
+  font-family: sans-serif;
+  color: blue;
+}
+
+body{
+  background-color: beige;
+}
+
+.button{
+  display: inline-block;
+}
+
+.column{
+  display: inline-block;
+  background-color: lavender;
+  width: 35%;
+  height: 650px;
+  overflow: scroll;
+  border: 2px solid black;
+  margin-right: 20px;
+  padding: 0px 10px 0px 10px;
+  vertical-align: top;
+}
+
+.header{
+  display: block;
+}
+
+h1, h2, h5{
+  font-family: sans-serif;
+}
+
+h4{
+  font-family: sans-serif;
+  font-weight: lighter;
+}
+
+.miniwrap{
+  display: block;
+  width: 50%;
+  height: auto;
+  background-color: lavender;
+  border: 2px solid red;
+  padding: 20px 10px 20px 20px;
+}
+
+.one_line{
+  display: inline-block;
+}
+
+p{
+  display: inline;
+  font-family: sans-serif;
+  font-weight: bold;
+  color: red;
+}
+
+.quotebox{
+  display: inline-block;
+
+}
+
+.wrapper{
+  display: block;
+  width: 100%;
+}

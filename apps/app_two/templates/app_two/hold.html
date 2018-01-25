@@ -1,0 +1,95 @@
+# user can add a quote to the main list
+def contribute_quote(request):
+    print("This is contribute_quote method in app2 views.py")
+    if request.method == "POST":
+        print("POST")
+
+# *** the 2 validations need to be passed before the author/quote can be added ***
+
+        # this_user has to be the whole user object
+        this_user = User.objects.get(id=request.session['user_id'])
+        this_author = request.POST['author']
+        this_quote = request.POST['quote']
+        print(this_user.name, this_author, this_quote)
+
+        # creating the new quote with the user object
+        new_quote = Quote.objects.create(post_id=this_user, author=this_author, quote=this_quote)
+
+        return redirect('app2:index')
+    return redirect('app2:index')
+
+
+---
+
+Note: I decided to do the quote validations in views.py; it took a lot less code than doing them in models.py.
+models.py, below def login_user section:
+
+    # new start
+    # WORKING - not sure how to do validations from a 2nd model
+
+    class QuoteManager(models.Manager):
+    # method to handle quote validations
+    # post_data is the information from request.POST
+        def validate_quote(self, post_data):
+            # dictionary to contain quote data from models.py
+            response_to_views = {}
+            # list to gather up errors:
+            errors = []
+            print("In model method:", post_data)
+
+            # add validations:
+    # author
+            if not post_data['author']:#python returns an empty string as false
+                errors.append('Author name is required')
+            if not len(post_data['author']) > 3:
+                errors.append('Author name must be at least 3 characters')
+
+    # quote
+            if not post_data['quote']:#python returns an empty string as false
+                errors.append('Quote is required')
+            if not len(post_data['quote']) > 10:
+                errors.append('Quote must be at least 10 characters')
+
+    # checking the errors for failed validations
+    # error messages will be returned
+    # status and errors are keys in the dictionary response_to_views
+            if errors: #failed validations
+                response_to_views['status'] = False
+                response_to_views['errors'] = errors
+            else: #passed validations
+                response_to_views['status'] = True
+
+                #create new user, saves data in a variable (quote):
+                quote = self.create(post_id=__, add_id=__, author=post_data['author'], quote=post_data['quote'])
+
+                # quote object is saved as a key in list and returned:
+                response_to_views['user'] = user
+    #return response data
+            return response_to_views
+
+
+    # new end - quotemanager link also new
+
+
+    # Create your models here.
+    class User(models.Model):
+        name=models.CharField(max_length=60)
+        alias=models.CharField(max_length=45)
+        email=models.CharField(max_length=100)
+        password=models.CharField(max_length=25)
+        dob=models.DateField(default=datetime.today, blank=True)
+        created_at=models.DateTimeField(auto_now_add=True)
+        updated_at=models.DateTimeField(auto_now=True)
+
+    # links UserManager to User, by overwriting the objects hidden key that all models have
+        objects = UserManager()
+
+    class Quote(models.Model):
+    # link to user who posts a quote
+        post_id=models.ForeignKey(User, related_name="quotes", null=True)
+    # link to users to add a posted quote
+        add_id=models.ManyToManyField(User, related_name="addquotes")
+        author=models.CharField(max_length=100)
+        quote=models.CharField(max_length=255)
+    # links QuoteManager to Quote
+        objects = QuoteManager()
